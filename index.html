@@ -3,50 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aviation & Airbus</title>
+  <title>feuerjus</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <nav class="nav">
-    <span class="brand">Aviation & Airbus</span>
+  <header class="site-header">
+    <h1 class="site-title">feuerjus<span class="cursor">_</span></h1>
+    <p class="site-sub">personal site</p>
+  </header>
+
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="projects">projects</button>
+    <button class="tab-btn" data-tab="tools">tools</button>
+    <button class="tab-btn" data-tab="knowledge">knowledge</button>
   </nav>
 
-  <section class="hero">
-    <h1>Aviation & Airbus</h1>
-    <p>Exploring the world of aviation — from iconic airliners to the safety systems that protect every flight.</p>
-  </section>
+  <main class="content-area" id="tab-content">
+    <p class="loading">loading...</p>
+  </main>
 
-  <div class="card-grid">
-    <div class="card">
-      <div class="icon">✈️</div>
-      <h3>Airbus</h3>
-      <p>The story of Airbus — from the A300 to the A380, fly-by-wire innovation, and shaping modern aviation.</p>
-      <a href="airbus/" class="btn">Explore Airbus</a>
-    </div>
-    <div class="card">
-      <div class="icon">🆕</div>
-      <h3>A320neo</h3>
-      <p>The best-selling narrowbody with next-generation engines, 20% better fuel efficiency, and extended range.</p>
-      <a href="a320neo/" class="btn">Explore A320neo</a>
-    </div>
-    <div class="card">
-      <div class="icon">🌍</div>
-      <h3>A350</h3>
-      <p>The ultra-modern widebody with a composite airframe, Rolls-Royce XWB engines, and exceptional range.</p>
-      <a href="a350/" class="btn">Explore A350</a>
-    </div>
-    <div class="card">
-      <div class="icon">🛡️</div>
-      <h3>Safety Systems</h3>
-      <p>TCAS, runway overrun protection, GPWS, and other critical systems that keep air travel safe.</p>
-      <a href="safety/" class="btn">Explore Safety</a>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <p>&copy; 2026 Aviation & Airbus Reference</p>
+  <footer class="site-footer">
+    feuerjus 2026
   </footer>
 
+  <script src="script.js"></script>
 </body>
 </html>
