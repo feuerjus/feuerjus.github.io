@@ -32,21 +32,9 @@ async function loadTab(tabName) {
 }
 
 function setupTab(tabName) {
-  const container = document.getElementById('tab-content');
-  container.removeEventListener('click', handleTileToggle);
-  container.addEventListener('click', handleTileToggle);
-
   if (tabName === 'tools') {
     setupCalculator();
   }
-}
-
-function handleTileToggle(e) {
-  const header = e.target.closest('.tile-header');
-  if (!header) return;
-  const tile = header.closest('.tile-collapsible');
-  if (!tile) return;
-  tile.classList.toggle('expanded');
 }
 
 function setupCalculator() {

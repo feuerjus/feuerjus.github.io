@@ -1,49 +1,48 @@
 <div class="tab-content" id="tab-tools">
   <h2 class="section-title">tools</h2>
   <div class="tile-grid">
-    <div class="tile tile-collapsible">
-      <div class="tile-header">
-        <h3 class="tile-title">data transfer calculator</h3>
-        <span class="tile-toggle"></span>
-      </div>
+    <div class="tile tile-wide">
+      <h3 class="tile-title">data transfer calculator</h3>
       <p class="tile-desc">calculate how long a data transfer will take based on size and speed.</p>
-      <div class="tile-body">
-        <div class="calc-form">
-          <div class="calc-row">
-            <label>data size</label>
-            <div class="input-group">
-              <input type="number" id="data-size" value="1" min="0" step="any" placeholder="size">
-              <select id="data-unit">
-                <option value="B">B</option>
-                <option value="kB">kB</option>
-                <option value="MB" selected>MB</option>
-                <option value="GB">GB</option>
-                <option value="TB">TB</option>
-              </select>
-            </div>
-          </div>
-          <div class="calc-row">
-            <label>transfer speed</label>
-            <div class="input-group">
-              <input type="number" id="transfer-speed" value="100" min="0" step="any" placeholder="speed">
-              <select id="speed-unit">
-                <option value="bit/s">bit/s</option>
-                <option value="kbit/s">kbit/s</option>
-                <option value="Mbit/s" selected>Mbit/s</option>
-                <option value="Gbit/s">Gbit/s</option>
-                <option value="B/s">B/s</option>
-                <option value="kB/s">kB/s</option>
-                <option value="MB/s">MB/s</option>
-                <option value="GB/s">GB/s</option>
-              </select>
-            </div>
-          </div>
-          <button id="calc-btn" class="calc-btn">calculate</button>
-          <div class="calc-result" id="calc-result">
-            <span class="result-value">_</span>
+      <div class="calc-form">
+        <div class="calc-row">
+          <label>data size</label>
+          <div class="input-group">
+            <input type="number" id="data-size" value="1" min="0" step="any" placeholder="size">
+            <select id="data-unit">
+              <option value="B">B</option>
+              <option value="kB">kB</option>
+              <option value="MB" selected>MB</option>
+              <option value="GB">GB</option>
+              <option value="TB">TB</option>
+            </select>
           </div>
         </div>
+        <div class="calc-row">
+          <label>transfer speed</label>
+          <div class="input-group">
+            <input type="number" id="transfer-speed" value="100" min="0" step="any" placeholder="speed">
+            <select id="speed-unit">
+              <option value="bit/s">bit/s</option>
+              <option value="kbit/s">kbit/s</option>
+              <option value="Mbit/s" selected>Mbit/s</option>
+              <option value="Gbit/s">Gbit/s</option>
+              <option value="B/s">B/s</option>
+              <option value="kB/s">kB/s</option>
+              <option value="MB/s">MB/s</option>
+              <option value="GB/s">GB/s</option>
+            </select>
+          </div>
+        </div>
+        <button id="calc-btn" class="calc-btn">calculate</button>
+        <div class="calc-result" id="calc-result">
+          <span class="result-value">_</span>
+        </div>
       </div>
+    </div>
+    <div class="tile tile-add">
+      <span class="tile-add-icon">+</span>
+      <p>add new tool</p>
     </div>
   </div>
 </div>

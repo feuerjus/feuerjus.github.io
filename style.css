@@ -211,7 +211,9 @@ a:hover {
   background: var(--surface-hover);
 }
 
-
+.tile-wide {
+  grid-column: 1 / -1;
+}
 
 .tile-title {
   font-family: var(--font-display);
@@ -232,41 +234,61 @@ a:hover {
   line-height: 1.5;
 }
 
-/* ---- Collapsible Tiles ---- */
-.tile-collapsible .tile-header {
+/* ---- Empty / Placeholder Tiles ---- */
+.tile-empty {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  user-select: none;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border-style: dashed;
+  border-color: var(--border-light);
+  min-height: 160px;
 }
 
-.tile-collapsible .tile-header:active {
-  opacity: 0.8;
+.tile-empty .tile-title::before {
+  content: '';
 }
 
-.tile-toggle {
-  font-family: var(--font);
-  font-size: 0.85rem;
+.tile-empty .tile-title {
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
+.tile-empty .tile-desc {
+  margin-bottom: 0;
+  font-size: 0.78rem;
+}
+
+/* ---- Add Tile ---- */
+.tile-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+  border-style: dashed;
+  border-color: var(--border-light);
+  cursor: default;
+  min-height: 120px;
+  gap: 0.5rem;
+}
+
+.tile-add:hover {
+  border-color: var(--amber-dim);
+}
+
+.tile-add-icon {
+  font-size: 1.5rem;
   color: var(--amber-dim);
-  flex-shrink: 0;
-  margin-left: 0.75rem;
+  line-height: 1;
 }
 
-.tile-toggle::before {
-  content: '[+]';
-}
-
-.tile-collapsible.expanded .tile-toggle::before {
-  content: '[-]';
-}
-
-.tile-collapsible .tile-body {
-  display: none;
-}
-
-.tile-collapsible.expanded .tile-body {
-  display: block;
+.tile-add p {
+  font-size: 0.78rem;
+  color: var(--text-dim);
 }
 
 /* ---- Calculator ---- */
@@ -382,71 +404,6 @@ a:hover {
 .result-value::before {
   content: '> ';
   color: var(--amber-dim);
-}
-
-/* ---- Fiber Connector Grid ---- */
-.connector-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-.connector {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 0.75rem;
-}
-
-.connector-name {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--amber);
-  margin-bottom: 0.35rem;
-}
-
-.connector-name small {
-  font-weight: 400;
-  color: var(--text-dim);
-}
-
-.connector svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-width: 120px;
-}
-
-.connector-info {
-  font-size: 0.72rem;
-  color: var(--text-dim);
-  margin-top: 0.25rem;
-  line-height: 1.4;
-}
-
-/* ---- Cable Type List ---- */
-.cable-list {
-  margin-top: 0.75rem;
-  padding: 0.75rem;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-size: 0.82rem;
-  line-height: 1.6;
-}
-
-.cable-label {
-  color: var(--text-bright);
-  font-weight: 700;
-}
-
-.cable-spec {
-  color: var(--text-dim);
-}
-
-.cable-sm {
-  margin-bottom: 0.25rem;
 }
 
 /* ---- Phonetic Alphabet Table ---- */
