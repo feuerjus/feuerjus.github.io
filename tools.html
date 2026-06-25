@@ -40,6 +40,50 @@
         </div>
       </div>
     </div>
+    <div class="tile tile-wide">
+      <h3 class="tile-title">ipv4 subnet calculator</h3>
+      <p class="tile-desc">calculate network address, broadcast, and host range for an ipv4 network.</p>
+      <div class="subnet-calc">
+        <div class="calc-row">
+          <label>ip address</label>
+          <input type="text" id="subnet-ip" value="192.168.1.0" placeholder="192.168.1.0">
+        </div>
+        <div class="calc-row">
+          <label>cidr suffix</label>
+          <input type="number" id="subnet-cidr" value="24" min="0" max="32" step="1">
+        </div>
+        <div class="calc-row">
+          <label>network mask</label>
+          <input type="text" id="subnet-mask" value="255.255.255.0" placeholder="255.255.255.0">
+        </div>
+        <div class="calc-row">
+          <label>number of hosts</label>
+          <input type="number" id="subnet-hosts" value="254" min="0" step="1">
+        </div>
+        <div class="subnet-results">
+          <div class="calc-row">
+            <label>network class</label>
+            <div class="subnet-result" id="subnet-class">C</div>
+          </div>
+          <div class="calc-row">
+            <label>max hosts</label>
+            <div class="subnet-result" id="subnet-maxhosts">254</div>
+          </div>
+          <div class="calc-row">
+            <label>network address</label>
+            <div class="subnet-result" id="subnet-network">192.168.1.0</div>
+          </div>
+          <div class="calc-row">
+            <label>broadcast address</label>
+            <div class="subnet-result" id="subnet-broadcast">192.168.1.255</div>
+          </div>
+          <div class="calc-row subnet-range-full">
+            <label>host range</label>
+            <div class="subnet-result" id="subnet-range">192.168.1.1 - 192.168.1.254</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="tile tile-add">
       <span class="tile-add-icon">+</span>
       <p>add new tool</p>

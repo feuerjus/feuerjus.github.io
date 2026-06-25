@@ -406,6 +406,63 @@ a:hover {
   color: var(--amber-dim);
 }
 
+/* ---- Subnet Calculator ---- */
+.subnet-calc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  max-width: 580px;
+}
+
+.subnet-calc input {
+  font-family: var(--font);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  color: var(--text);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.subnet-calc input:focus {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 1px var(--amber-glow), 0 0 6px var(--amber-glow);
+}
+
+.subnet-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.subnet-result {
+  padding: 0.6rem 0.75rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--amber);
+  min-height: 2.4rem;
+  display: flex;
+  align-items: center;
+}
+
+.subnet-range-full {
+  grid-column: 1 / -1;
+}
+
+.subnet-result::before {
+  content: '> ';
+  color: var(--amber-dim);
+}
+
 /* ---- Phonetic Alphabet Table ---- */
 .phonetic-table {
   width: 100%;
@@ -508,6 +565,14 @@ a:hover {
 
   .input-group {
     flex-direction: row;
+  }
+
+  .subnet-calc {
+    max-width: 100%;
+  }
+
+  .subnet-results {
+    grid-template-columns: 1fr;
   }
 
   .phonetic-table {

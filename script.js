@@ -34,6 +34,7 @@ async function loadTab(tabName) {
 function setupTab(tabName) {
   if (tabName === 'tools') {
     setupCalculator();
+    setupSubnetCalculator();
   }
 }
 
@@ -88,6 +89,154 @@ function calculateTransferTime() {
   const secs = Math.floor(totalSeconds % 60);
 
   resultEl.innerHTML = '<span class="result-value">' + hours + ' h ' + minutes + ' min ' + secs + ' sec</span>';
+}
+
+function setupSubnetCalculator() {
+  const ids = ['subnet-ip', 'subnet-cidr', 'subnet-mask', 'subnet-hosts'];
+  ids.forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', function () {
+        calculateSubnet(this.id);
+      });
+    }
+  });
+  calculateSubnet('subnet-cidr');
+}
+
+var subnetRecalculating = false;
+
+function calculateSubnet(sourceId) {
+  if (subnetRecalculating) return;
+  subnetRecalculating = true;
+
+  try {
+    var ipStr = document.getElementById('subnet-ip').value.trim();
+    var ipInt = ipToInt(ipStr);
+    if (ipInt === null) return;
+
+    var cidr;
+    var sourceEl = document.getElementById(sourceId);
+
+    if (sourceId === 'subnet-cidr') {
+      cidr = parseInt(sourceEl.value, 10);
+    } else if (sourceId === 'subnet-mask') {
+      var maskInt = maskToInt(sourceEl.value);
+      if (maskInt === null) return;
+      cidr = intToCidr(maskInt);
+    } else if (sourceId === 'subnet-hosts') {
+      var hosts = parseInt(sourceEl.value, 10);
+      if (isNaN(hosts) || hosts < 0) return;
+      cidr = hostsToCidr(hosts);
+    } else {
+      cidr = parseInt(document.getElementById('subnet-cidr').value, 10);
+    }
+
+    if (isNaN(cidr) || cidr < 0 || cidr > 32) return;
+
+    var maskInt = cidrToMaskInt(cidr);
+    var networkInt = ipInt & maskInt;
+    var broadcastInt = (ipInt | (~maskInt >>> 0)) >>> 0;
+
+    var maxHosts = cidrToMaxHosts(cidr);
+
+    if (sourceId !== 'subnet-cidr') {
+      document.getElementById('subnet-cidr').value = cidr;
+    }
+    if (sourceId !== 'subnet-mask') {
+      document.getElementById('subnet-mask').value = intToIp(maskInt);
+    }
+    if (sourceId !== 'subnet-hosts') {
+      document.getElementById('subnet-hosts').value = maxHosts;
+    }
+
+    document.getElementById('subnet-network').textContent = intToIp(networkInt);
+    document.getElementById('subnet-broadcast').textContent = intToIp(broadcastInt);
+    document.getElementById('subnet-maxhosts').textContent = maxHosts;
+    document.getElementById('subnet-class').textContent = getIpClass(ipInt);
+
+    if (cidr === 32) {
+      document.getElementById('subnet-range').textContent = intToIp(networkInt) + ' (single host)';
+    } else if (cidr === 31) {
+      document.getElementById('subnet-range').textContent = intToIp(networkInt) + ' - ' + intToIp(broadcastInt);
+    } else if (maxHosts === 0) {
+      document.getElementById('subnet-range').textContent = 'none';
+    } else {
+      var firstHost = (networkInt + 1) >>> 0;
+      var lastHost = (broadcastInt - 1) >>> 0;
+      document.getElementById('subnet-range').textContent = intToIp(firstHost) + ' - ' + intToIp(lastHost);
+    }
+  } finally {
+    subnetRecalculating = false;
+  }
+}
+
+function ipToInt(ip) {
+  var parts = ip.split('.');
+  if (parts.length !== 4) return null;
+  var result = 0;
+  for (var i = 0; i < 4; i++) {
+    var octet = parseInt(parts[i], 10);
+    if (isNaN(octet) || octet < 0 || octet > 255) return null;
+    result = ((result << 8) | octet) >>> 0;
+  }
+  return result;
+}
+
+function intToIp(n) {
+  return ((n >>> 24) & 0xFF) + '.' + ((n >>> 16) & 0xFF) + '.' + ((n >>> 8) & 0xFF) + '.' + (n & 0xFF);
+}
+
+function maskToInt(mask) {
+  var parts = mask.split('.');
+  if (parts.length !== 4) return null;
+  var result = 0;
+  for (var i = 0; i < 4; i++) {
+    var octet = parseInt(parts[i], 10);
+    if (isNaN(octet) || octet < 0 || octet > 255) return null;
+    result = ((result << 8) | octet) >>> 0;
+  }
+  return result;
+}
+
+function cidrToMaskInt(cidr) {
+  if (cidr === 0) return 0;
+  if (cidr === 32) return 0xFFFFFFFF;
+  return (~((1 << (32 - cidr)) - 1)) >>> 0;
+}
+
+function intToCidr(mask) {
+  var count = 0;
+  for (var i = 31; i >= 0; i--) {
+    if ((mask >>> i) & 1) count++;
+    else break;
+  }
+  return count;
+}
+
+function hostsToCidr(hosts) {
+  if (isNaN(hosts) || hosts < 0) return 32;
+  if (hosts <= 1) return 32;
+  if (hosts === 2) return 31;
+  var total = hosts + 2;
+  var bits = 0;
+  while ((1 << bits) < total) bits++;
+  return Math.max(0, Math.min(32, 32 - bits));
+}
+
+function cidrToMaxHosts(cidr) {
+  if (cidr === 32) return 1;
+  if (cidr === 31) return 2;
+  return Math.pow(2, 32 - cidr) - 2;
+}
+
+function getIpClass(ipInt) {
+  var first = (ipInt >>> 24) & 0xFF;
+  if (first <= 127) return 'A';
+  if (first <= 191) return 'B';
+  if (first <= 223) return 'C';
+  if (first <= 239) return 'D';
+  return 'E';
 }
 
 document.addEventListener('DOMContentLoaded', function () {
