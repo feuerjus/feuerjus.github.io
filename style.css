@@ -2,9 +2,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  transition: background 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 
-:root {
+:root,
+[data-theme="dark"] {
   --bg: #0d0d0a;
   --surface: #161610;
   --surface-hover: #1e1e16;
@@ -23,6 +25,25 @@
   --font-display: 'Courier New', 'Fira Code', 'Consolas', monospace;
 }
 
+[data-theme="light"] {
+  --bg: #f5f0e8;
+  --surface: #eee8dd;
+  --surface-hover: #e5dfd4;
+  --amber: #b88600;
+  --amber-dark: #8a6500;
+  --amber-dim: #d4a843;
+  --amber-glow: rgba(184, 134, 0, 0.15);
+  --text: #1a1a14;
+  --text-dim: #6b6355;
+  --text-bright: #0a0a08;
+  --border: #d5cdc0;
+  --border-light: #e0d8cc;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --font: 'Courier New', 'Fira Code', 'Consolas', 'Liberation Mono', monospace;
+  --font-display: 'Courier New', 'Fira Code', 'Consolas', monospace;
+}
+
 ::selection {
   background: var(--amber);
   color: var(--bg);
@@ -34,12 +55,14 @@ html {
 
 body {
   font-family: var(--font);
+  font-weight: 500;
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: background 0.3s, color 0.3s;
 }
 
 a {
@@ -55,6 +78,13 @@ a:hover {
 .site-header {
   border-bottom: 1px solid var(--border);
   padding: 1.25rem 1.5rem 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.header-left {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -104,6 +134,42 @@ a:hover {
   color: var(--amber-dim);
 }
 
+/* ---- Theme Toggle ---- */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.theme-toggle:hover {
+  color: var(--amber);
+  border-color: var(--amber-dim);
+  background: var(--surface-hover);
+}
+
+.theme-toggle svg {
+  display: block;
+}
+
+[data-theme="dark"] .icon-sun,
+[data-theme="light"] .icon-moon {
+  display: block;
+}
+
+[data-theme="dark"] .icon-moon,
+[data-theme="light"] .icon-sun {
+  display: none;
+}
+
 /* ---- Tab Navigation ---- */
 .tab-nav {
   display: flex;
@@ -117,6 +183,7 @@ a:hover {
 .tab-btn {
   font-family: var(--font);
   font-size: 0.85rem;
+  font-weight: 600;
   padding: 0.5rem 1.25rem;
   background: transparent;
   border: none;
@@ -218,6 +285,7 @@ a:hover {
 .tile-title {
   font-family: var(--font-display);
   font-size: 1rem;
+  font-weight: 700;
   color: var(--amber);
   margin-bottom: 0.4rem;
 }
@@ -229,6 +297,7 @@ a:hover {
 
 .tile-desc {
   font-size: 0.82rem;
+  font-weight: 500;
   color: var(--text-dim);
   margin-bottom: 0.75rem;
   line-height: 1.5;
@@ -492,6 +561,7 @@ a:hover {
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--border);
   color: var(--text);
+  font-weight: 500;
   transition: background 0.15s;
 }
 
