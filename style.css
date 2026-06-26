@@ -29,10 +29,10 @@
   --bg: #f5f0e8;
   --surface: #eee8dd;
   --surface-hover: #e5dfd4;
-  --amber: #b88600;
+  --amber: #a07500;
   --amber-dark: #8a6500;
-  --amber-dim: #d4a843;
-  --amber-glow: rgba(184, 134, 0, 0.15);
+  --amber-dim: #bf8a30;
+  --amber-glow: rgba(160, 117, 0, 0.15);
   --text: #1a1a14;
   --text-dim: #6b6355;
   --text-bright: #0a0a08;
@@ -126,6 +126,7 @@ a:hover {
 .site-sub {
   color: var(--text-dim);
   font-size: 0.8rem;
+  font-weight: 600;
   font-family: var(--font-display);
 }
 
@@ -297,7 +298,7 @@ a:hover {
 
 .tile-desc {
   font-size: 0.82rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-dim);
   margin-bottom: 0.75rem;
   line-height: 1.5;
@@ -357,6 +358,7 @@ a:hover {
 
 .tile-add p {
   font-size: 0.78rem;
+  font-weight: 600;
   color: var(--text-dim);
 }
 
@@ -376,6 +378,7 @@ a:hover {
 
 .calc-row label {
   font-size: 0.78rem;
+  font-weight: 600;
   color: var(--text-dim);
   text-transform: lowercase;
 }
