@@ -616,6 +616,51 @@ a:hover {
   color: var(--amber);
 }
 
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.82rem;
+}
+
+.file-name {
+  flex: 1;
+  color: var(--text);
+  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-name::before {
+  content: '> ';
+  color: var(--amber-dim);
+}
+
+.clear-btn {
+  font-family: var(--font);
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 0.15rem 0.45rem;
+  line-height: 1;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.clear-btn:hover {
+  color: var(--amber);
+  border-color: var(--amber-dim);
+}
+
 .drop-text {
   font-size: 0.82rem;
   font-weight: 600;

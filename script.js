@@ -312,7 +312,8 @@ document.addEventListener('DOMContentLoaded', function () {
 function setupFileHasher() {
   const dropZone = document.getElementById('drop-zone');
   const fileInput = document.getElementById('file-input');
-  if (!dropZone || !fileInput) return;
+  const clearBtn = document.getElementById('clear-btn');
+  if (!dropZone || !fileInput || !clearBtn) return;
 
   dropZone.addEventListener('click', function () {
     fileInput.click();
@@ -338,13 +339,36 @@ function setupFileHasher() {
     if (this.files.length > 0) handleFile(this.files[0]);
     this.value = '';
   });
+
+  clearBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    clearFile();
+  });
 }
 
-function handleFile(file) {
+function clearFile() {
+  const fileInput = document.getElementById('file-input');
+  const fileInfo = document.getElementById('file-info');
   const resultDiv = document.getElementById('hash-results');
   const sha256El = document.getElementById('hash-sha256');
   const sha1El = document.getElementById('hash-sha1');
 
+  fileInput.value = '';
+  fileInfo.hidden = true;
+  resultDiv.hidden = true;
+  sha256El.textContent = '_';
+  sha1El.textContent = '_';
+}
+
+function handleFile(file) {
+  const fileInfo = document.getElementById('file-info');
+  const fileName = document.getElementById('file-name');
+  const resultDiv = document.getElementById('hash-results');
+  const sha256El = document.getElementById('hash-sha256');
+  const sha1El = document.getElementById('hash-sha1');
+
+  fileName.textContent = file.name;
+  fileInfo.hidden = false;
   resultDiv.hidden = false;
   sha256El.textContent = 'computing...';
   sha1El.textContent = 'computing...';
