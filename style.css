@@ -616,6 +616,11 @@ a:hover {
   color: var(--amber);
 }
 
+.file-info[hidden],
+.hash-results[hidden] {
+  display: none;
+}
+
 .file-info {
   display: flex;
   align-items: center;
