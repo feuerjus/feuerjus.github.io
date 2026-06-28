@@ -87,5 +87,26 @@
         </div>
       </div>
     </div>
+    <div class="tile tile-wide">
+      <h3 class="tile-title">file hash calculator</h3>
+      <p class="tile-desc">compute sha-256 and sha-1 hashes of any file — drag & drop or click to browse.</p>
+      <div class="hash-form">
+        <div class="drop-zone" id="drop-zone">
+          <input type="file" id="file-input" hidden>
+          <span class="drop-icon">+</span>
+          <span class="drop-text">drop file here or click to browse</span>
+        </div>
+        <div class="hash-results" id="hash-results" hidden>
+          <div class="hash-row">
+            <span class="hash-label">sha-256</span>
+            <span class="hash-value" id="hash-sha256">_</span>
+          </div>
+          <div class="hash-row">
+            <span class="hash-label">sha-1</span>
+            <span class="hash-value" id="hash-sha1">_</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

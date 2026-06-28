@@ -36,6 +36,7 @@ function setupTab(tabName) {
     setupCalculator();
     setupSubnetCalculator();
     setupToolSearch();
+    setupFileHasher();
   }
 }
 
@@ -306,3 +307,82 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+
+/* ---- File Hash Calculator ---- */
+function setupFileHasher() {
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+  if (!dropZone || !fileInput) return;
+
+  dropZone.addEventListener('click', function () {
+    fileInput.click();
+  });
+
+  dropZone.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    dropZone.classList.add('drag-over');
+  });
+
+  dropZone.addEventListener('dragleave', function () {
+    dropZone.classList.remove('drag-over');
+  });
+
+  dropZone.addEventListener('drop', function (e) {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const files = e.dataTransfer.files;
+    if (files.length > 0) handleFile(files[0]);
+  });
+
+  fileInput.addEventListener('change', function () {
+    if (this.files.length > 0) handleFile(this.files[0]);
+    this.value = '';
+  });
+}
+
+function handleFile(file) {
+  const resultDiv = document.getElementById('hash-results');
+  const sha256El = document.getElementById('hash-sha256');
+  const sha1El = document.getElementById('hash-sha1');
+
+  resultDiv.hidden = false;
+  sha256El.textContent = 'computing...';
+  sha1El.textContent = 'computing...';
+
+  const reader = new FileReader();
+  reader.onload = async function (e) {
+    const arrayBuffer = e.target.result;
+
+    try {
+      const [sha256, sha1] = await Promise.all([
+        computeHash('SHA-256', arrayBuffer),
+        computeHash('SHA-1', arrayBuffer)
+      ]);
+      sha256El.textContent = sha256;
+      sha1El.textContent = sha1;
+    } catch {
+      sha256El.textContent = 'error';
+      sha1El.textContent = 'error';
+    }
+  };
+  reader.onerror = function () {
+    sha256El.textContent = 'error reading file';
+    sha1El.textContent = 'error reading file';
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+async function computeHash(algorithm, buffer) {
+  const hashBuffer = await crypto.subtle.digest(algorithm, buffer);
+  return arrayBufferToHex(hashBuffer);
+}
+
+function arrayBufferToHex(buffer) {
+  const bytes = new Uint8Array(buffer);
+  var hex = '';
+  for (var i = 0; i < bytes.length; i++) {
+    var b = bytes[i];
+    hex += (b >>> 4).toString(16) + (b & 0x0F).toString(16);
+  }
+  return hex;
+}
