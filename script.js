@@ -290,6 +290,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   loadTab('projects');
 
+  document.addEventListener('keydown', function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+      if (currentTab === 'tools') {
+        e.preventDefault();
+        const searchInput = document.getElementById('tool-search');
+        if (searchInput) searchInput.focus();
+      }
+    }
+  });
+
   document.querySelectorAll('.tab-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       loadTab(btn.dataset.tab);
