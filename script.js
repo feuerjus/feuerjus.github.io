@@ -35,7 +35,27 @@ function setupTab(tabName) {
   if (tabName === 'tools') {
     setupCalculator();
     setupSubnetCalculator();
+    setupToolSearch();
   }
+}
+
+function setupToolSearch() {
+  const searchInput = document.getElementById('tool-search');
+  if (!searchInput) return;
+
+  searchInput.addEventListener('input', function () {
+    const term = this.value.toLowerCase().trim();
+    const tiles = document.querySelectorAll('#tab-tools .tile');
+
+    tiles.forEach(function (tile) {
+      if (!term) {
+        tile.style.display = '';
+        return;
+      }
+      const text = tile.textContent.toLowerCase();
+      tile.style.display = text.includes(term) ? '' : 'none';
+    });
+  });
 }
 
 function setupCalculator() {
