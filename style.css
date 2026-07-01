@@ -90,6 +90,14 @@ a:hover {
   gap: 0.75rem;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
 .site-title {
   font-family: var(--font-display);
   font-size: 1.5rem;
