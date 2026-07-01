@@ -122,5 +122,29 @@
         </div>
       </div>
     </div>
+    <div class="tile tile-wide">
+      <h3 class="tile-title">compass</h3>
+      <p class="tile-desc">detect magnetic heading using your device's compass sensor.</p>
+      <div class="compass-tool">
+        <button id="compass-start-btn" class="calc-btn">start compass</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="compass-modal" class="compass-modal-overlay" hidden>
+    <div class="compass-modal">
+      <button id="compass-modal-close" class="compass-modal-close" aria-label="Close">&times;</button>
+      <div class="compass-face">
+        <div class="compass-ring">
+          <span class="compass-label compass-n">N</span>
+          <span class="compass-label compass-e">E</span>
+          <span class="compass-label compass-s">S</span>
+          <span class="compass-label compass-w">W</span>
+          <div class="compass-needle" id="compass-needle"></div>
+        </div>
+        <div class="compass-heading" id="compass-heading">--° ---</div>
+        <div class="compass-error" id="compass-error" hidden>error: no compass sensor detected on this device.</div>
+      </div>
+    </div>
   </div>
 </div>

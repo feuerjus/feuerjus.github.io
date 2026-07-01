@@ -40,6 +40,7 @@ function setupTab(tabName) {
     setupToolSearch();
     setupToolFilters();
     setupFileHasher();
+    setupCompass();
   }
 }
 
@@ -526,6 +527,99 @@ function handleFile(file) {
     sha1El.textContent = 'error reading file';
   };
   reader.readAsArrayBuffer(file);
+}
+
+/* ---- Compass ---- */
+function setupCompass() {
+  var startBtn = document.getElementById('compass-start-btn');
+  var modal = document.getElementById('compass-modal');
+  var closeBtn = document.getElementById('compass-modal-close');
+  var needle = document.getElementById('compass-needle');
+  var headingEl = document.getElementById('compass-heading');
+  var errorEl = document.getElementById('compass-error');
+
+  if (!startBtn || !modal) return;
+
+  var listener = null;
+  var timeoutId = null;
+  var running = false;
+
+  var directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+
+  function getDirection(deg) {
+    return directions[Math.round(deg / 45) % 8];
+  }
+
+  function startCompass() {
+    modal.hidden = false;
+    errorEl.hidden = true;
+    headingEl.textContent = '--° ---';
+    running = true;
+
+    function handleOrientation(event) {
+      if (!running) return;
+
+      var heading = event.webkitCompassHeading != null ? event.webkitCompassHeading : event.alpha;
+
+      if (heading == null) return;
+
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+
+      var h = Math.round(heading);
+      var dir = getDirection(h);
+
+      errorEl.hidden = true;
+      needle.style.transform = 'translateX(-50%) rotate(' + h + 'deg)';
+      headingEl.textContent = h + '\u00B0 ' + dir;
+    }
+
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+      DeviceOrientationEvent.requestPermission().then(function (state) {
+        if (state === 'granted') {
+          window.addEventListener('deviceorientation', handleOrientation);
+          listener = handleOrientation;
+        } else {
+          errorEl.hidden = false;
+        }
+      }).catch(function () {
+        errorEl.hidden = false;
+      });
+    } else {
+      window.addEventListener('deviceorientation', handleOrientation);
+      listener = handleOrientation;
+    }
+
+    timeoutId = setTimeout(function () {
+      if (running && headingEl.textContent === '--\u00B0 ---') {
+        errorEl.hidden = false;
+      }
+    }, 3000);
+  }
+
+  function stopCompass() {
+    running = false;
+    if (listener) {
+      window.removeEventListener('deviceorientation', listener);
+      listener = null;
+    }
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+    needle.style.transform = 'translateX(-50%) rotate(0deg)';
+    headingEl.textContent = '--\u00B0 ---';
+    errorEl.hidden = true;
+    modal.hidden = true;
+  }
+
+  startBtn.addEventListener('click', startCompass);
+  closeBtn.addEventListener('click', stopCompass);
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) stopCompass();
+  });
 }
 
 async function computeHash(algorithm, buffer) {

@@ -923,6 +923,171 @@ a:hover {
   color: var(--amber-dim);
 }
 
+/* ---- Compass ---- */
+.compass-tool {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+}
+
+.compass-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 1rem;
+}
+
+.compass-modal-overlay[hidden] {
+  display: none;
+}
+
+.compass-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.75rem 1.75rem;
+  max-width: 360px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.compass-modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.25rem;
+  transition: color 0.2s;
+  font-family: var(--font);
+}
+
+.compass-modal-close:hover {
+  color: var(--amber);
+}
+
+.compass-face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.compass-ring {
+  width: 200px;
+  height: 200px;
+  border: 2px solid var(--amber-dim);
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.compass-label {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--amber);
+  user-select: none;
+  line-height: 1;
+}
+
+.compass-n {
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.compass-e {
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+}
+
+.compass-s {
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.compass-w {
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+}
+
+.compass-needle {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  width: 4px;
+  height: 45%;
+  background: var(--amber);
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(0deg);
+  border-radius: 2px 2px 0 0;
+  transition: transform 0.1s ease-out;
+}
+
+.compass-needle::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid var(--amber);
+}
+
+.compass-heading {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--amber);
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compass-heading::before {
+  content: '> ';
+  color: var(--amber-dim);
+  font-size: 1rem;
+}
+
+.compass-error {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--amber);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.compass-error::before {
+  content: '! ';
+  color: var(--amber-dim);
+}
+
+.compass-error[hidden] {
+  display: none;
+}
+
 /* ---- Phonetic Alphabet Table ---- */
 .phonetic-table {
   width: 100%;
