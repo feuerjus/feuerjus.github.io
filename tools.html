@@ -130,6 +130,38 @@
         <button id="compass-start-btn" class="calc-btn">start compass</button>
       </div>
     </div>
+    <div class="tile tile-wide" data-tag="hiking">
+      <span class="tile-tag">[hiking]</span>
+      <h3 class="tile-title">hiking time calculator</h3>
+      <p class="tile-desc">calculate hiking time based on din 33466.</p>
+      <div class="calc-form">
+        <div class="calc-row">
+          <label>distance</label>
+          <div class="input-group">
+            <input type="number" id="hike-distance" value="10" min="0" step="any" placeholder="distance">
+            <span class="input-unit">km</span>
+          </div>
+        </div>
+        <div class="calc-row">
+          <label>ascent ↑</label>
+          <div class="input-group">
+            <input type="number" id="hike-ascent" value="500" min="0" step="any" placeholder="ascent">
+            <span class="input-unit">m</span>
+          </div>
+        </div>
+        <div class="calc-row">
+          <label>descent ↓</label>
+          <div class="input-group">
+            <input type="number" id="hike-descent" value="500" min="0" step="any" placeholder="descent">
+            <span class="input-unit">m</span>
+          </div>
+        </div>
+        <div class="calc-result" id="hike-result">
+          <span class="result-value" id="hike-result-net">_</span>
+          <span class="result-sub" id="hike-result-realistic"></span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="compass-modal" class="compass-modal-overlay" hidden>

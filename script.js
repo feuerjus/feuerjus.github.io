@@ -41,6 +41,7 @@ function setupTab(tabName) {
     setupToolFilters();
     setupFileHasher();
     setupCompass();
+    setupHikingCalculator();
   }
 }
 
@@ -667,6 +668,54 @@ function setupCompass() {
   modal.addEventListener('click', function (e) {
     if (e.target === modal) stopCompass();
   });
+}
+
+/* ---- Hiking Time Calculator ---- */
+function setupHikingCalculator() {
+  const ids = ['hike-distance', 'hike-ascent', 'hike-descent'];
+  ids.forEach(function (id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', calculateHikingTime);
+    }
+  });
+  calculateHikingTime();
+}
+
+function calculateHikingTime() {
+  const dist = parseFloat(document.getElementById('hike-distance').value);
+  const ascent = parseFloat(document.getElementById('hike-ascent').value);
+  const descent = parseFloat(document.getElementById('hike-descent').value);
+  const netEl = document.getElementById('hike-result-net');
+  const realisticEl = document.getElementById('hike-result-realistic');
+
+  if (isNaN(dist) || isNaN(ascent) || isNaN(descent) || dist < 0 || ascent < 0 || descent < 0) {
+    netEl.textContent = 'invalid input';
+    realisticEl.textContent = '';
+    return;
+  }
+
+  if (dist === 0 && ascent === 0 && descent === 0) {
+    netEl.textContent = '\u2014';
+    realisticEl.textContent = '';
+    return;
+  }
+
+  const timeH = dist / 4;
+  const timeV = ascent / 300 + descent / 500;
+  const netHours = Math.max(timeH, timeV) + Math.min(timeH, timeV) / 2;
+  const realisticHours = netHours * 1.2;
+
+  function formatTime(hours) {
+    const h = Math.floor(hours);
+    const min = Math.round((hours - h) * 60);
+    if (h === 0) return min + ' min';
+    if (min === 0) return h + ' h';
+    return h + ' h ' + min + ' min';
+  }
+
+  netEl.textContent = formatTime(netHours);
+  realisticEl.textContent = formatTime(realisticHours) + ' (+20 % for breaks)';
 }
 
 async function computeHash(algorithm, buffer) {
