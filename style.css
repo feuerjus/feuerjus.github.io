@@ -137,7 +137,6 @@ a:hover {
 
 /* ---- Install Button ---- */
 .install-btn {
-  display: none;
   background: none;
   border: 1px solid var(--border);
   border-radius: 4px;

@@ -317,7 +317,6 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
     deferredPrompt = e;
-    showInstallBtn();
   });
 
   window.addEventListener('appinstalled', function () {
@@ -330,15 +329,11 @@ document.addEventListener('DOMContentLoaded', function () {
   var pwaModalClose = document.getElementById('pwa-modal-close');
   var pwaModalBody = document.getElementById('pwa-modal-body');
   var pwaModalIos = document.getElementById('pwa-modal-ios');
-
-  if (!isStandalone()) {
-    if (isiOS()) {
-      showInstallBtn();
-    }
-  }
+  var pwaModalAndroid = document.getElementById('pwa-modal-android');
 
   if (installBtn) {
     installBtn.addEventListener('click', function () {
+      if (isStandalone()) return;
       if (deferredPrompt) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then(function (choice) {
@@ -347,14 +342,12 @@ document.addEventListener('DOMContentLoaded', function () {
           }
           deferredPrompt = null;
         });
-      } else if (isiOS() && !isStandalone()) {
+      } else if (isiOS()) {
         showIosModal();
-      } else if (isStandalone()) {
-        return;
+      } else if (isAndroid()) {
+        showAndroidModal();
       } else {
-        pwaModalBody.innerHTML = '<p>Open this site in Chrome on Android to install the app.</p>';
-        pwaModalIos.hidden = true;
-        showPwaModal();
+        showMessageModal('Open this site in Chrome or a mobile browser to install the app.');
       }
     });
   }
@@ -370,11 +363,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-function showInstallBtn() {
-  var btn = document.getElementById('install-btn');
-  if (btn) btn.style.display = '';
-}
-
 function hideInstallBtn() {
   var btn = document.getElementById('install-btn');
   if (btn) btn.style.display = 'none';
@@ -382,6 +370,10 @@ function hideInstallBtn() {
 
 function isiOS() {
   return /iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function isAndroid() {
+  return /android/i.test(navigator.userAgent);
 }
 
 function isStandalone() {
@@ -396,13 +388,39 @@ function showPwaModal() {
 function hidePwaModal() {
   var modal = document.getElementById('pwa-modal');
   if (modal) modal.hidden = true;
+  var ios = document.getElementById('pwa-modal-ios');
+  var android = document.getElementById('pwa-modal-android');
+  if (ios) ios.hidden = true;
+  if (android) android.hidden = true;
 }
 
 function showIosModal() {
   var body = document.getElementById('pwa-modal-body');
   var ios = document.getElementById('pwa-modal-ios');
+  var android = document.getElementById('pwa-modal-android');
   if (body) body.innerHTML = '';
   if (ios) ios.hidden = false;
+  if (android) android.hidden = true;
+  showPwaModal();
+}
+
+function showAndroidModal() {
+  var body = document.getElementById('pwa-modal-body');
+  var ios = document.getElementById('pwa-modal-ios');
+  var android = document.getElementById('pwa-modal-android');
+  if (body) body.innerHTML = '';
+  if (ios) ios.hidden = true;
+  if (android) android.hidden = false;
+  showPwaModal();
+}
+
+function showMessageModal(msg) {
+  var body = document.getElementById('pwa-modal-body');
+  var ios = document.getElementById('pwa-modal-ios');
+  var android = document.getElementById('pwa-modal-android');
+  if (body) body.innerHTML = '<p>' + msg + '</p>';
+  if (ios) ios.hidden = true;
+  if (android) android.hidden = true;
   showPwaModal();
 }
 
