@@ -566,13 +566,16 @@ function setupCompass() {
     var h = Math.round(raw);
 
     headingReadings.push(h);
-    if (headingReadings.length > 10) headingReadings.shift();
+    if (headingReadings.length > 20) headingReadings.shift();
 
     var readings = headingReadings;
-    var allSame = readings.length >= 5 && readings.every(function (v) { return v === readings[0]; });
-    var defaultVal = allSame && (h === 90 || h === 180 || h === 270);
+    var stuckCount = 0;
+    for (var si = 0; si < readings.length; si++) {
+      if (readings[si] === h) stuckCount++;
+    }
+    var stuck = stuckCount >= 15;
 
-    if (allSame && defaultVal) {
+    if (stuck) {
       if (!sensorStuck) {
         sensorStuck = true;
         headingEl.textContent = h + '\u00B0 ' + getDirection(h) + ' (stuck?)';
