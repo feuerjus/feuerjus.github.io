@@ -1,10 +1,18 @@
 <div class="tab-content" id="tab-tools">
   <div class="section-header">
     <h2 class="section-title">tools</h2>
-    <input type="text" id="tool-search" class="search-input" placeholder="filter tools..." aria-label="Filter tools">
+    <div class="section-header-right">
+      <div class="tag-filters">
+        <button class="tag-btn active" data-tag="all">all</button>
+        <button class="tag-btn" data-tag="it">[IT]</button>
+        <button class="tag-btn" data-tag="hiking">[hiking]</button>
+      </div>
+      <input type="text" id="tool-search" class="search-input" placeholder="filter tools..." aria-label="Filter tools">
+    </div>
   </div>
   <div class="tile-grid">
-    <div class="tile tile-wide">
+    <div class="tile tile-wide" data-tag="it">
+      <span class="tile-tag">[IT]</span>
       <h3 class="tile-title">data transfer calculator</h3>
       <p class="tile-desc">calculate how long a data transfer will take based on size and speed.</p>
       <div class="calc-form">
@@ -43,7 +51,8 @@
         </div>
       </div>
     </div>
-    <div class="tile tile-wide">
+    <div class="tile tile-wide" data-tag="it">
+      <span class="tile-tag">[IT]</span>
       <h3 class="tile-title">ipv4 subnet calculator</h3>
       <p class="tile-desc">calculate network address, broadcast, and host range for an ipv4 network.</p>
       <div class="subnet-calc">
@@ -87,7 +96,8 @@
         </div>
       </div>
     </div>
-    <div class="tile tile-wide">
+    <div class="tile tile-wide" data-tag="it">
+      <span class="tile-tag">[IT]</span>
       <h3 class="tile-title">file hash calculator</h3>
       <p class="tile-desc">compute sha-256 and sha-1 hashes of any file — drag & drop or click to browse.</p>
       <div class="hash-form">

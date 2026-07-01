@@ -31,30 +31,46 @@ async function loadTab(tabName) {
   }
 }
 
+let currentTag = 'all';
+
 function setupTab(tabName) {
   if (tabName === 'tools') {
     setupCalculator();
     setupSubnetCalculator();
     setupToolSearch();
+    setupToolFilters();
     setupFileHasher();
   }
+}
+
+function filterTools() {
+  const term = document.getElementById('tool-search').value.toLowerCase().trim();
+  const tiles = document.querySelectorAll('#tab-tools .tile');
+
+  tiles.forEach(function (tile) {
+    const tag = tile.dataset.tag || '';
+    const matchesTag = currentTag === 'all' || tag === currentTag;
+    const matchesSearch = !term || tile.textContent.toLowerCase().includes(term);
+    tile.style.display = matchesTag && matchesSearch ? '' : 'none';
+  });
 }
 
 function setupToolSearch() {
   const searchInput = document.getElementById('tool-search');
   if (!searchInput) return;
+  searchInput.addEventListener('input', filterTools);
+}
 
-  searchInput.addEventListener('input', function () {
-    const term = this.value.toLowerCase().trim();
-    const tiles = document.querySelectorAll('#tab-tools .tile');
+function setupToolFilters() {
+  const buttons = document.querySelectorAll('.tag-btn');
+  if (!buttons.length) return;
 
-    tiles.forEach(function (tile) {
-      if (!term) {
-        tile.style.display = '';
-        return;
-      }
-      const text = tile.textContent.toLowerCase();
-      tile.style.display = text.includes(term) ? '' : 'none';
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      buttons.forEach(function (b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      currentTag = this.dataset.tag;
+      filterTools();
     });
   });
 }
