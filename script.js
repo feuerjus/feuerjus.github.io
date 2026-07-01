@@ -548,8 +548,6 @@ function setupCompass() {
   var directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
   var currentAngle = 0;
   var lastHeading = null;
-  var headingReadings = [];
-  var sensorStuck = false;
 
   function getDirection(deg) {
     return directions[Math.round(deg / 45) % 8];
@@ -564,31 +562,6 @@ function setupCompass() {
     }
 
     var h = Math.round(raw);
-
-    headingReadings.push(h);
-    if (headingReadings.length > 20) headingReadings.shift();
-
-    var readings = headingReadings;
-    var stuckCount = 0;
-    for (var si = 0; si < readings.length; si++) {
-      if (readings[si] === h) stuckCount++;
-    }
-    var stuck = stuckCount >= 15;
-
-    if (stuck) {
-      if (!sensorStuck) {
-        sensorStuck = true;
-        headingEl.textContent = h + '\u00B0 ' + getDirection(h) + ' (stuck?)';
-        errorEl.hidden = false;
-        errorEl.textContent = 'sensor not responding — value not changing. try chrome or move device.';
-      }
-      return;
-    }
-
-    if (sensorStuck) {
-      sensorStuck = false;
-      errorEl.hidden = true;
-    }
 
     if (lastHeading === null) {
       currentAngle = h;
@@ -625,10 +598,8 @@ function setupCompass() {
     modal.hidden = false;
     errorEl.hidden = true;
     headingEl.textContent = '--\u00B0 ---';
-    headingReadings = [];
     lastHeading = null;
     currentAngle = 0;
-    sensorStuck = false;
     ring.style.transform = 'rotate(0deg)';
     running = true;
 
