@@ -122,7 +122,8 @@
         </div>
       </div>
     </div>
-    <div class="tile tile-wide">
+    <div class="tile tile-wide" data-tag="hiking">
+      <span class="tile-tag">[hiking]</span>
       <h3 class="tile-title">compass</h3>
       <p class="tile-desc">detect magnetic heading using your device's compass sensor.</p>
       <div class="compass-tool">
@@ -135,12 +136,22 @@
     <div class="compass-modal">
       <button id="compass-modal-close" class="compass-modal-close" aria-label="Close">&times;</button>
       <div class="compass-face">
-        <div class="compass-ring">
-          <span class="compass-label compass-n">N</span>
-          <span class="compass-label compass-e">E</span>
-          <span class="compass-label compass-s">S</span>
-          <span class="compass-label compass-w">W</span>
-          <div class="compass-needle" id="compass-needle"></div>
+        <div class="compass-ring-wrapper">
+          <div class="compass-lubber"></div>
+          <div class="compass-ring" id="compass-ring">
+            <span class="compass-label compass-n">N</span>
+            <span class="compass-label compass-e">E</span>
+            <span class="compass-label compass-s">S</span>
+            <span class="compass-label compass-w">W</span>
+            <span class="compass-arrow compass-arrow-n"></span>
+            <span class="compass-arrow compass-arrow-ne"></span>
+            <span class="compass-arrow compass-arrow-e"></span>
+            <span class="compass-arrow compass-arrow-se"></span>
+            <span class="compass-arrow compass-arrow-s"></span>
+            <span class="compass-arrow compass-arrow-sw"></span>
+            <span class="compass-arrow compass-arrow-w"></span>
+            <span class="compass-arrow compass-arrow-nw"></span>
+          </div>
         </div>
         <div class="compass-heading" id="compass-heading">--° ---</div>
         <div class="compass-error" id="compass-error" hidden>error: no compass sensor detected on this device.</div>

@@ -534,82 +534,155 @@ function setupCompass() {
   var startBtn = document.getElementById('compass-start-btn');
   var modal = document.getElementById('compass-modal');
   var closeBtn = document.getElementById('compass-modal-close');
-  var needle = document.getElementById('compass-needle');
+  var ring = document.getElementById('compass-ring');
   var headingEl = document.getElementById('compass-heading');
   var errorEl = document.getElementById('compass-error');
 
-  if (!startBtn || !modal) return;
+  if (!startBtn || !modal || !ring) return;
 
-  var listener = null;
+  var listeners = [];
+  var sensor = null;
   var timeoutId = null;
   var running = false;
 
   var directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+  var currentAngle = 0;
+  var lastHeading = null;
+  var headingReadings = [];
+  var sensorStuck = false;
 
   function getDirection(deg) {
     return directions[Math.round(deg / 45) % 8];
   }
 
+  function processHeading(raw) {
+    if (!running) return;
+
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+
+    var h = Math.round(raw);
+
+    headingReadings.push(h);
+    if (headingReadings.length > 10) headingReadings.shift();
+
+    var readings = headingReadings;
+    var allSame = readings.length >= 5 && readings.every(function (v) { return v === readings[0]; });
+    var defaultVal = allSame && h % 90 === 0;
+
+    if (allSame && defaultVal) {
+      if (!sensorStuck) {
+        sensorStuck = true;
+        headingEl.textContent = h + '\u00B0 ' + getDirection(h) + ' (stuck?)';
+        errorEl.hidden = false;
+        errorEl.textContent = 'sensor not responding — value not changing. try chrome or move device.';
+      }
+      return;
+    }
+
+    if (sensorStuck) {
+      sensorStuck = false;
+      errorEl.hidden = true;
+    }
+
+    if (lastHeading === null) {
+      currentAngle = h;
+    } else {
+      var delta = h - lastHeading;
+      if (delta > 180) delta -= 360;
+      if (delta < -180) delta += 360;
+      currentAngle += delta;
+    }
+    lastHeading = h;
+
+    var dir = getDirection(h);
+    errorEl.hidden = true;
+    ring.style.transform = 'rotate(' + currentAngle + 'deg)';
+    headingEl.textContent = h + '\u00B0 ' + dir;
+  }
+
+  function onOrientation(event) {
+    if (!running) return;
+
+    var heading = null;
+
+    if (event.webkitCompassHeading != null) {
+      heading = event.webkitCompassHeading;
+    } else if (event.absolute && event.alpha != null) {
+      heading = event.alpha;
+    }
+
+    if (heading == null) return;
+    processHeading(heading);
+  }
+
   function startCompass() {
     modal.hidden = false;
     errorEl.hidden = true;
-    headingEl.textContent = '--° ---';
+    headingEl.textContent = '--\u00B0 ---';
+    headingReadings = [];
+    lastHeading = null;
+    currentAngle = 0;
+    sensorStuck = false;
+    ring.style.transform = 'rotate(0deg)';
     running = true;
-
-    function handleOrientation(event) {
-      if (!running) return;
-
-      var heading = event.webkitCompassHeading != null ? event.webkitCompassHeading : event.alpha;
-
-      if (heading == null) return;
-
-      if (timeoutId !== null) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
-      }
-
-      var h = Math.round(heading);
-      var dir = getDirection(h);
-
-      errorEl.hidden = true;
-      needle.style.transform = 'translateX(-50%) rotate(' + h + 'deg)';
-      headingEl.textContent = h + '\u00B0 ' + dir;
-    }
 
     if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
       DeviceOrientationEvent.requestPermission().then(function (state) {
         if (state === 'granted') {
-          window.addEventListener('deviceorientation', handleOrientation);
-          listener = handleOrientation;
+          addOrientationListeners();
         } else {
           errorEl.hidden = false;
+          errorEl.textContent = 'permission denied. allow sensor access and try again.';
         }
       }).catch(function () {
         errorEl.hidden = false;
+        errorEl.textContent = 'permission request failed.';
       });
     } else {
-      window.addEventListener('deviceorientation', handleOrientation);
-      listener = handleOrientation;
+      addOrientationListeners();
     }
 
     timeoutId = setTimeout(function () {
       if (running && headingEl.textContent === '--\u00B0 ---') {
         errorEl.hidden = false;
+        errorEl.textContent = 'no compass sensor detected on this device.';
       }
-    }, 3000);
+    }, 5000);
+  }
+
+  function addOrientationListeners() {
+    listeners = [];
+    var f = onOrientation;
+    window.addEventListener('deviceorientation', f);
+    listeners.push({ target: window, type: 'deviceorientation', fn: f });
+
+    window.addEventListener('deviceorientationabsolute', f);
+    listeners.push({ target: window, type: 'deviceorientationabsolute', fn: f });
   }
 
   function stopCompass() {
     running = false;
-    if (listener) {
-      window.removeEventListener('deviceorientation', listener);
-      listener = null;
+
+    for (var i = 0; i < listeners.length; i++) {
+      var l = listeners[i];
+      l.target.removeEventListener(l.type, l.fn);
     }
+    listeners = [];
+
+    if (sensor) {
+      try { sensor.stop(); } catch (e) {}
+      sensor = null;
+    }
+
     if (timeoutId !== null) {
       clearTimeout(timeoutId);
       timeoutId = null;
     }
-    needle.style.transform = 'translateX(-50%) rotate(0deg)';
+
+    ring.style.transform = 'rotate(0deg)';
     headingEl.textContent = '--\u00B0 ---';
     errorEl.hidden = true;
     modal.hidden = true;
