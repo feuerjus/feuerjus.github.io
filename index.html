@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>feuerjus</title>
+  <meta name="theme-color" content="#0d0d0a">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/pictures/logo_pwa.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,6 +16,7 @@
       <h1 class="site-title">feuerjus<span class="cursor">_</span></h1>
       <p class="site-sub">personal site</p>
     </div>
+    <button id="install-btn" class="install-btn" aria-label="Install app">+install</button>
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
       <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"/>
@@ -44,6 +48,24 @@
   <footer class="site-footer">
     feuerjus 2026
   </footer>
+
+  <div id="pwa-modal" class="pwa-modal-overlay" hidden>
+    <div class="pwa-modal">
+      <button id="pwa-modal-close" class="pwa-modal-close" aria-label="Close">&times;</button>
+      <div class="pwa-modal-icon">+install</div>
+      <h2 class="pwa-modal-title">Install App</h2>
+      <div id="pwa-modal-body">
+        <p>Add feuerjus to your home screen for the best experience.</p>
+      </div>
+      <div id="pwa-modal-ios" hidden>
+        <ol class="pwa-steps">
+          <li>Tap the <strong>Share</strong> button <span class="ios-icon-share"></span> in Safari</li>
+          <li>Scroll down and tap <strong>Add to Home Screen</strong></li>
+          <li>Tap <strong>Add</strong> in the top-right corner</li>
+        </ol>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>

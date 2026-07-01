@@ -306,7 +306,105 @@ document.addEventListener('DOMContentLoaded', function () {
       loadTab(btn.dataset.tab);
     });
   });
+
+  /* ---- PWA ---- */
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(function () {});
+  }
+
+  var deferredPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    showInstallBtn();
+  });
+
+  window.addEventListener('appinstalled', function () {
+    deferredPrompt = null;
+    hideInstallBtn();
+  });
+
+  var installBtn = document.getElementById('install-btn');
+  var pwaModal = document.getElementById('pwa-modal');
+  var pwaModalClose = document.getElementById('pwa-modal-close');
+  var pwaModalBody = document.getElementById('pwa-modal-body');
+  var pwaModalIos = document.getElementById('pwa-modal-ios');
+
+  if (!isStandalone()) {
+    if (isiOS()) {
+      showInstallBtn();
+    }
+  }
+
+  if (installBtn) {
+    installBtn.addEventListener('click', function () {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function (choice) {
+          if (choice.outcome === 'accepted') {
+            hideInstallBtn();
+          }
+          deferredPrompt = null;
+        });
+      } else if (isiOS() && !isStandalone()) {
+        showIosModal();
+      } else if (isStandalone()) {
+        return;
+      } else {
+        pwaModalBody.innerHTML = '<p>Open this site in Chrome on Android to install the app.</p>';
+        pwaModalIos.hidden = true;
+        showPwaModal();
+      }
+    });
+  }
+
+  if (pwaModalClose) {
+    pwaModalClose.addEventListener('click', hidePwaModal);
+  }
+
+  if (pwaModal) {
+    pwaModal.addEventListener('click', function (e) {
+      if (e.target === pwaModal) hidePwaModal();
+    });
+  }
 });
+
+function showInstallBtn() {
+  var btn = document.getElementById('install-btn');
+  if (btn) btn.style.display = '';
+}
+
+function hideInstallBtn() {
+  var btn = document.getElementById('install-btn');
+  if (btn) btn.style.display = 'none';
+}
+
+function isiOS() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+}
+
+function showPwaModal() {
+  var modal = document.getElementById('pwa-modal');
+  if (modal) modal.hidden = false;
+}
+
+function hidePwaModal() {
+  var modal = document.getElementById('pwa-modal');
+  if (modal) modal.hidden = true;
+}
+
+function showIosModal() {
+  var body = document.getElementById('pwa-modal-body');
+  var ios = document.getElementById('pwa-modal-ios');
+  if (body) body.innerHTML = '';
+  if (ios) ios.hidden = false;
+  showPwaModal();
+}
 
 /* ---- File Hash Calculator ---- */
 function setupFileHasher() {

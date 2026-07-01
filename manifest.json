@@ -1,0 +1,16 @@
+{
+  "name": "feuerjus",
+  "short_name": "feuerjus",
+  "description": "personal site",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0d0a",
+  "theme_color": "#0d0d0a",
+  "icons": [
+    {
+      "src": "/pictures/logo_pwa.png",
+      "sizes": "1035x1035",
+      "type": "image/png"
+    }
+  ]
+}
