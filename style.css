@@ -1034,7 +1034,7 @@ a:hover {
 
 .compass-e {
   top: 50%;
-  right: 8px;
+  right: 12px;
   transform: translateY(-50%);
 }
 
@@ -1046,7 +1046,7 @@ a:hover {
 
 .compass-w {
   top: 50%;
-  left: 8px;
+  left: 12px;
   transform: translateY(-50%);
 }
 

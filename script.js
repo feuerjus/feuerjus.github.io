@@ -570,7 +570,7 @@ function setupCompass() {
 
     var readings = headingReadings;
     var allSame = readings.length >= 5 && readings.every(function (v) { return v === readings[0]; });
-    var defaultVal = allSame && h % 90 === 0;
+    var defaultVal = allSame && (h === 90 || h === 180 || h === 270);
 
     if (allSame && defaultVal) {
       if (!sensorStuck) {
